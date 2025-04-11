@@ -12,56 +12,86 @@ def ruleta(n_tiradas, ronda):
     return numeros.tolist()
 
 
-def estadisticas(numeros, apuesta):
+def moda(numeros, apuesta):
+    # Aplanamos todos los datos
+    datos_flat = [num for sublist in numeros for num in sublist]
 
+    # Calculamos la moda global
+    conteo = col.Counter(datos_flat)
+    max_freq = max(conteo.values())
+    moda = [num for num, freq in conteo.items() if freq == max_freq][0]  # tomamos la primera si hay más de una
+
+    # Frecuencia acumulada
+    acumulado = []
+    freq_moda = []
+    freq_apuesta = []
+
+    for i in range(1, len(datos_flat) + 1):
+        sublista = datos_flat[:i]
+        freq_moda.append(sublista.count(moda))
+        freq_apuesta.append(sublista.count(apuesta))
+        acumulado.append(i)
+
+    return moda, acumulado, freq_moda, freq_apuesta
+
+
+
+
+def media(numeros):
     # Convertir la lista de listas en un DataFrame
     df = pd.DataFrame(numeros)
     
-    # Calcular la media y la desviación estándar
+    # Calcular la media 
     media = df.mean().mean()
-    desviacion = df.std().std()
     
-    # Calcular la frecuencia absoluta
-    frecuencia_absoluta = (df == apuesta).sum().sum()
+    return media
+
+def desviacion_acumulada(numeros):
+    datos_flat = [num for sublist in numeros for num in sublist]
+    desvios = []
+
+    for i in range(1, len(datos_flat) + 1):
+        sublista = datos_flat[:i]
+        desvio = np.std(sublista)
+        desvios.append(desvio)
+
+    return desvios
+
+
+def frecuencia_absoluta_acumulada(numeros, apuesta):
+    datos_flat = [num for sublist in numeros for num in sublist]
+    frecuencias = []
+
+    for i in range(1, len(datos_flat) + 1):
+        sublista = datos_flat[:i]
+        cuenta = sublista.count(apuesta)
+        frecuencias.append(cuenta)
+
+    return frecuencias
+
+
+def frecuencia_relativa(numeros, apuesta):
+    datos_flat = [num for sublist in numeros for num in sublist]
+    total_tiradas = []
+    frecuencia_relativa = []
+
+    for i in range(1, len(datos_flat) + 1):
+        sublista = datos_flat[:i]
+        cuenta = sublista.count(apuesta)
+        frecuencia = (cuenta / i) * 100
+        total_tiradas.append(i)
+        frecuencia_relativa.append(frecuencia)
+
+    return total_tiradas, frecuencia_relativa
+
+
+
+def paridad(numeros):
+    # Convertir la lista de listas en un DataFrame
+    df = pd.DataFrame(numeros)
     
-    # Calcular la frecuencia relativa
-    frecuencia_relativa = (frecuencia_absoluta / (df.size)) * 100
+    # Calcular la cantidad de números pares e impares
+    cantidad_pares = (df % 2 == 0).sum().sum()
+    cantidad_impares = (df % 2 != 0).sum().sum()
     
-    #Calcular la moda 
-    datos_flat = [num for sublist in numeros for num in sublist]  # aplana la lista 2D
-    conteo = col.Counter(datos_flat)
-    max_freq = max(conteo.values())
-    moda = [num for num, freq in conteo.items() if freq == max_freq]
-    
-    #Calcular cantidad de nros par
-    impar = [num for num in datos_flat if num % 2 != 0]
-    par = [num for num in datos_flat if num % 2 == 0]
-    cantidad_impar = len(impar)
-    cantidad_par = len(par)
-    porcentaje_impar = (cantidad_impar / len(datos_flat)) * 100
-    porcentaje_par = (cantidad_par / len(datos_flat)) * 100
-
-    return media, desviacion, frecuencia_absoluta, frecuencia_relativa, numeros, moda, cantidad_par, cantidad_impar, porcentaje_impar, porcentaje_par
-
-
-
-def aplanar(numeros):
-    return [num for ronda in numeros for num in ronda]
-
-
-
-def frecuencia_absoluta(tiros, numero):
-    return tiros.count(numero)
-
-
-
-def frecuencia_moda(tiros):
-    conteo = col.Counter(tiros)
-    max_freq = max(conteo.values())
-    modas = [num for num, freq in conteo.items() if freq == max_freq]
-    return modas[0], max_freq
-
-
-
-def desviacion_std(tiros):
-    return np.std(tiros)
+    return cantidad_pares, cantidad_impares
