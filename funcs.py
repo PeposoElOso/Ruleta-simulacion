@@ -37,14 +37,17 @@ def moda(numeros, apuesta):
 
 
 
-def media(numeros):
-    # Convertir la lista de listas en un DataFrame
-    df = pd.DataFrame(numeros)
-    
-    # Calcular la media 
-    media = df.mean().mean()
-    
-    return media
+def media_acumulada(numeros):
+    datos_flat = [num for sublist in numeros for num in sublist]
+    medias = []
+
+    for i in range(1, len(datos_flat) + 1):
+        sublista = datos_flat[:i]
+        media = np.mean(sublista)
+        medias.append(media)
+
+    return medias
+
 
 def desviacion_acumulada(numeros):
     datos_flat = [num for sublist in numeros for num in sublist]

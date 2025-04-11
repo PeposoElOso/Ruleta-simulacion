@@ -52,3 +52,19 @@ def graficar_desviacion_vs_apuesta(desvios, frecuencias, apuesta):
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
+
+def graficar_desvio_vs_media(desvios, medias):
+    tiradas = list(range(1, len(desvios) + 1))
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(tiradas, desvios, label='Desviación estándar acumulada', color='red')
+    plt.plot(tiradas, medias, label='Media acumulada', color='blue')
+
+    plt.title('Desviación estándar vs Media a lo largo de las tiradas')
+    plt.xlabel('Cantidad de tiradas')
+    plt.ylabel('Valor')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
