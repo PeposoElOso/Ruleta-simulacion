@@ -1,11 +1,18 @@
 import funcs as f
 import graf as gr
+import estrategia as e
 
 numeros =f.ruleta(5, 5)
 colores = f.color(numeros)  
-print (numeros[1][1])
-print(colores[1][1])
+
 apuesta= int(input("Ingrese el número que desea apostar (0-36): "))
+
+
+
+
+
+
+
 
 #1- grafico de tortas porcentaje de paridad
 paridad = f.paridad(numeros)
