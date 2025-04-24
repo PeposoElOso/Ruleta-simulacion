@@ -6,10 +6,49 @@ import random
 import numpy as np
 import collections as col
 
+rojo = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+negro = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
 
+columna1 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34]
+columna2 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35]
+columna3 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36]
+
+fila1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+fila2 = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+fila3 = [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
 def ruleta(n_tiradas, ronda):
     numeros = np.random.randint(0, 37, size=(ronda, n_tiradas))
     return numeros.tolist()
+
+def color(numeros):
+    colores = [["" for _ in range(len(numeros[0]))] for _ in range(len(numeros))] 
+    for i in range(len(numeros)):
+        for j in range(len(numeros[i])):
+            if numeros[i][j] == 0:
+                colores[i][j] = "verde"
+            elif numeros[i][j] in rojo: 
+                colores[i][j] = "rojo"  
+            else:
+                colores[i][j] ="negro"
+                
+    return colores
+
+def columna(numeros, columna):
+    columna = [[""for _ in range(len(numeros[0]))] for _ in range(len(numeros))]
+    for i in range(len(numeros)):
+        for j in range(len(numeros[i])):
+            if numeros[i][j] in columna1:
+                columna[i][j] = "columna1"
+            elif numeros[i][j] in columna2:
+                columna[i][j] = "columna2"
+            elif numeros[i][j] in columna3:
+                columna[i][j] = "columna3"
+            else:
+                columna[i][j] = "no pertenece a ninguna columna"
+                
+    return columna
+
+
 
 
 def moda(numeros, apuesta):
