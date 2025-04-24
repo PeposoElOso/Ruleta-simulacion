@@ -7,7 +7,7 @@ import graf as gr
 balance = 20  # Dinero inicial
 apuesta = 10  # Apuesta base
 
-def dalembert(colores):
+def dalembert(colores, balance):
     
     color_apuesta= str(input("Ingrese el R o N "))
     
@@ -56,7 +56,7 @@ def dalembert(colores):
 
 
 
-def velazquez(colores):
+def velazquez(colores, balance):
     
     color_apuesta= str(input("Ingrese el R o N "))
     

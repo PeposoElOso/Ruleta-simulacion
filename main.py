@@ -4,10 +4,9 @@ import estrategia as e
 
 numeros =f.ruleta(5, 5)
 colores = f.color(numeros)  
-e.velazquez(colores)
+#e.dalembert(colores, 100)
+e.velazquez(colores,100)
 apuesta= int(input("Ingrese el número que desea apostar (0-36): "))
-
-
 
 
 
