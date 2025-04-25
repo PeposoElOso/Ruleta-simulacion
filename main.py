@@ -15,10 +15,10 @@ else:
 
 numeros =f.ruleta(5, 5)
 colores = f.color(numeros)  
-#e.dalembert(colores, 100,color_apuesta)
-#e.velazquez(colores,100,color_apuesta)
+e.dalembert(colores, 100,color_apuesta, numeros)
+#e.velazquez(colores,10000,color_apuesta,numeros)
 #e.martingala(colores,100,color_apuesta,numeros)
-e.fibonacci(colores,100,color_apuesta)
+#e.fibonacci(colores,100,color_apuesta)
 apuesta= int(input("Ingrese el número que desea apostar (0-36): "))
 
 

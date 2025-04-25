@@ -12,14 +12,17 @@ from funcs import ruleta, color
 balance = 20  # Dinero inicial
 apuesta = 10  # Apuesta base
 
-def dalembert(colores, balance,color_apuesta):       
+def dalembert(colores, balance,color_apuesta, numeros):       
     bet = apuesta
-
+    balance_inicial = balance
+    historial = []
+    contador = 0
+    salir = False
     print(f"Balance inicial: {balance}")
     
     for i in range(len(colores)): 
         for j in range(len(colores[i])):
-            
+            contador = contador + 1
             if balance <= 0 or bet>balance:
                 print("Saldo insuficiente.")
                 salir= True
@@ -28,27 +31,47 @@ def dalembert(colores, balance,color_apuesta):
             else :
                 if colores[i][j] == color_apuesta:  
                     balance += bet
+                    historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'GANÓ'))
                     bet = max(apuesta, bet - apuesta)  # Reducir apuesta
                 else:
                     balance -= bet
+                    historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'PERDIÓ'))
                     bet += apuesta  # Incrementar apuesta                                                                           
         if salir:
             break                 
     print(f"Balance final: {balance}")
             
-    return balance
+     # Resultados finales
+    df_resultados = pd.DataFrame(historial, columns=["Ronda", "Número", "Color", "Apuesta", "Saldo", "Resultado"])
+    print("\n--- RESULTADOS Velazquez ---")
+    print(df_resultados)
+
+    # Gráfica de evolución
+    plt.plot(df_resultados["Ronda"], balance_inicial)
+    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"])
+    plt.title("Evolución del Saldo - Velazquez")
+    plt.xlabel("Ronda")
+    plt.ylabel("Saldo")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    return df_resultados 
 
 ##############################################################################################################################################################################################
 
 
-def velazquez(colores, balance,color_apuesta):
+def velazquez(colores, balance,color_apuesta, numeros):
       
     bet = apuesta
-    print(f"Balance inicial: {balance}")
+    historial = []
+    contador = 0
+    salir = False
     
+    print(f"Balance inicial: {balance}")
     for i in range(len(colores)): 
         for j in range(len(colores[i])):
-            
+            contador = contador + 1
             if balance <= 0 or bet>balance:
                 print("Saldo insuficiente.")
                 salir= True
@@ -57,14 +80,32 @@ def velazquez(colores, balance,color_apuesta):
             else :
                 if colores[i][j] == color_apuesta:  
                     balance += bet
+                    historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'GANÓ'))
                     bet = max(apuesta, bet/2)  # divide apuesta
                 else:
                     balance -= bet
+                    historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'PERDIÓ'))
                     bet += bet*2  # duplica apuesta
                                                                                 
         if salir:
             break              
-    print(f"Balance final: {balance}")           
+    print(f"Balance final: {balance}")  
+    
+     # Resultados finales
+    df_resultados = pd.DataFrame(historial, columns=["Ronda", "Número", "Color", "Apuesta", "Saldo", "Resultado"])
+    print("\n--- RESULTADOS Velazquez ---")
+    print(df_resultados)
+
+    # Gráfica de evolución
+    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"], marker='o')
+    plt.title("Evolución del Saldo - Velazquez")
+    plt.xlabel("Ronda")
+    plt.ylabel("Saldo")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    return df_resultados         
   
 
 
@@ -85,7 +126,7 @@ def martingala(colores,balance,color_apuesta, numeros):
             contador = contador + 1
             
             if balance <= 0 or bet>balance:
-                print(f"Saldo insuficiente para continuar en la ronda {j}.")
+                print(f"Saldo insuficiente para continuar en la ronda {contador}.")
                 break
 
             if colores[i][j]  == color_apuesta:
