@@ -2,9 +2,11 @@ import funcs as f
 import graf as gr
 import estrategia as e
 
+numeros =f.ruleta(5, 5)
+colores = f.color(numeros)  
 
 color_apuesta= str(input("Ingrese el R o N "))
-    
+
 if color_apuesta == "R" or color_apuesta == "r":
     color_apuesta = "rojo"
 elif color_apuesta == "N" or color_apuesta == "n":
@@ -12,13 +14,30 @@ elif color_apuesta == "N" or color_apuesta == "n":
 else:
     print("Color no válido. Debe ser 'R' o 'N'.")
 
+estrategia= str(input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): "))
+balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
 
-numeros =f.ruleta(5, 5)
-colores = f.color(numeros)  
-#e.dalembert(colores, 100,color_apuesta, numeros)
-#e.velazquez(colores,10000,color_apuesta,numeros)
-e.martingala(colores,100,color_apuesta,numeros)
-#e.fibonacci(colores,100,color_apuesta)
+if balance_elegido == "I" or balance_elegido == "i":
+    balance = 99999999999999999999999999999999999999999999
+elif balance_elegido == "A" or balance_elegido == "a":
+    balance = int(input("Ingrese el saldo inicial: "))
+else:
+    print("Tipo de saldo no válido. Debe ser 'I' o 'A'.")
+    exit()
+
+if estrategia == "D" or estrategia == "d":
+    e.dalembert(colores, balance,color_apuesta, numeros)
+elif estrategia == "V" or estrategia == "v":
+    e.velazquez(colores,balance,color_apuesta,numeros)
+elif estrategia == "M" or estrategia == "m":
+    e.martingala(colores,balance,color_apuesta,numeros)
+elif estrategia == "F" or estrategia == "f":
+    e.fibonacci(colores,balance,color_apuesta)
+else:
+    print("Color no válido. Debe ser 'R' o 'N'.")
+
+
+
 apuesta= int(input("Ingrese el número que desea apostar (0-36): "))
 
 
