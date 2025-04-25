@@ -18,6 +18,9 @@ def dalembert(colores, balance,color_apuesta, numeros):
     historial = []
     contador = 0
     salir = False
+    historial_rondas = []
+    fa_ronda = 0
+    print(f"Color de apuesta: {color_apuesta}")
     print(f"Balance inicial: {balance}")
     
     for i in range(len(colores)): 
@@ -32,41 +35,65 @@ def dalembert(colores, balance,color_apuesta, numeros):
                 if colores[i][j] == color_apuesta:  
                     balance += bet
                     historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'GANÓ'))
+                    fa_ronda=fa_ronda+1                    
                     bet = max(apuesta, bet - apuesta)  # Reducir apuesta
                 else:
                     balance -= bet
                     historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'PERDIÓ'))
-                    bet += apuesta  # Incrementar apuesta                                                                           
+                    bet += apuesta  # Incrementar apuesta     
+        
+        historial_rondas.append((i,fa_ronda))
+        fa_ronda=0                                                                     
         if salir:
+            for i in range(len(colores)): 
+                historial_rondas.append((i,fa_ronda))
+
             break                 
     print(f"Balance final: {balance}")
             
      # Resultados finales
     df_resultados = pd.DataFrame(historial, columns=["Ronda", "Número", "Color", "Apuesta", "Saldo", "Resultado"])
-    print("\n--- RESULTADOS Velazquez ---")
+    print("\n--- RESULTADOS Dalembert ---")
     print(df_resultados)
 
     # Gráfica de evolución
-    plt.plot(df_resultados["Ronda"], balance_inicial)
+    plt.axhline( balance_inicial, linestyle='--', color='red')
     plt.plot(df_resultados["Ronda"], df_resultados["Saldo"])
-    plt.title("Evolución del Saldo - Velazquez")
+    plt.title("Evolución del Saldo - Dalembert")
     plt.xlabel("Ronda")
     plt.ylabel("Saldo")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
-
+    
+    
+    
+    resultados = pd.DataFrame(historial_rondas, columns=["Ronda", "Frecuencia"])
+    plt.figure(figsize=(10, 6))
+    plt.title("\n--- Frecuencia Absoluta Velazquez ---")
+    
+    plt.bar(resultados["Ronda"], resultados["Frecuencia"], color='skyblue', label='Frecuencia Absoluta')
+    plt.title('Frecuencia Absoluta por ronda')
+    plt.xlabel('Ronda')
+    plt.ylabel('Frecuencia')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
     return df_resultados 
 
 ##############################################################################################################################################################################################
 
 
 def velazquez(colores, balance,color_apuesta, numeros):
-      
+    balance_inicial = balance
     bet = apuesta
     historial = []
     contador = 0
     salir = False
+    historial_rondas = []
+    fa_ronda = 0
     
     print(f"Balance inicial: {balance}")
     for i in range(len(colores)): 
@@ -80,6 +107,7 @@ def velazquez(colores, balance,color_apuesta, numeros):
             else :
                 if colores[i][j] == color_apuesta:  
                     balance += bet
+                    fa_ronda=fa_ronda+1 
                     historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'GANÓ'))
                     bet = max(apuesta, bet/2)  # divide apuesta
                 else:
@@ -87,7 +115,12 @@ def velazquez(colores, balance,color_apuesta, numeros):
                     historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'PERDIÓ'))
                     bet += bet*2  # duplica apuesta
                                                                                 
+        historial_rondas.append((i,fa_ronda))
+        fa_ronda=0                                                                     
         if salir:
+            for i in range(len(colores)): 
+                historial_rondas.append((i,fa_ronda))
+
             break              
     print(f"Balance final: {balance}")  
     
@@ -97,7 +130,8 @@ def velazquez(colores, balance,color_apuesta, numeros):
     print(df_resultados)
 
     # Gráfica de evolución
-    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"], marker='o')
+    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"])
+    plt.axhline( balance_inicial, linestyle='--', color='red')
     plt.title("Evolución del Saldo - Velazquez")
     plt.xlabel("Ronda")
     plt.ylabel("Saldo")
@@ -105,6 +139,20 @@ def velazquez(colores, balance,color_apuesta, numeros):
     plt.tight_layout()
     plt.show()
 
+
+    resultados = pd.DataFrame(historial_rondas, columns=["Ronda", "Frecuencia"])
+    plt.figure(figsize=(10, 6))
+    plt.title("\n--- Frecuencia Absoluta Velazquez ---")
+    
+    plt.bar(resultados["Ronda"], resultados["Frecuencia"], color='skyblue', label='Frecuencia Absoluta')
+    plt.title('Frecuencia Absoluta por ronda')
+    plt.xlabel('Ronda')
+    plt.ylabel('Frecuencia')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
     return df_resultados         
   
 
@@ -117,7 +165,10 @@ def martingala(colores,balance,color_apuesta, numeros):
     bet = apuesta
     historial = []
     contador = 0    
-    
+    balance_inicial = balance
+    historial_rondas = []
+    fa_ronda = 0
+    salir = False
     print(f"Balance inicial: {balance}")
     
     for i in range(len(colores)): 
@@ -127,10 +178,12 @@ def martingala(colores,balance,color_apuesta, numeros):
             
             if balance <= 0 or bet>balance:
                 print(f"Saldo insuficiente para continuar en la ronda {contador}.")
+                salir= True
                 break
 
             if colores[i][j]  == color_apuesta:
                 balance += bet
+                fa_ronda=fa_ronda+1
                 historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'GANÓ'))
                 bet = apuesta  # Reinicia al monto base
             else:
@@ -138,13 +191,24 @@ def martingala(colores,balance,color_apuesta, numeros):
                 historial.append((contador, numeros[i][j], colores[i][j] , bet, balance, 'PERDIÓ'))
                 bet *= 2  # Duplicar al perder
 
+        historial_rondas.append((i,fa_ronda))
+        fa_ronda=0                                                                     
+        if salir:
+            for i in range(len(colores)): 
+                historial_rondas.append((i,fa_ronda))
+
+            break  
+        
+        
+        
     # Resultados finales
     df_resultados = pd.DataFrame(historial, columns=["Ronda", "Número", "Color", "Apuesta", "Saldo", "Resultado"])
     print("\n--- RESULTADOS MARTINGALA ---")
     print(df_resultados)
 
     # Gráfica de evolución
-    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"], marker='o')
+    plt.plot(df_resultados["Ronda"], df_resultados["Saldo"])
+    plt.axhline( balance_inicial, linestyle='--', color='red')
     plt.title("Evolución del Saldo - Martingala")
     plt.xlabel("Ronda")
     plt.ylabel("Saldo")
@@ -152,6 +216,19 @@ def martingala(colores,balance,color_apuesta, numeros):
     plt.tight_layout()
     plt.show()
 
+    resultados = pd.DataFrame(historial_rondas, columns=["Ronda", "Frecuencia"])
+    plt.figure(figsize=(10, 6))
+    plt.title("\n--- Frecuencia Absoluta Martindale ---")
+    
+    plt.bar(resultados["Ronda"], resultados["Frecuencia"], color='skyblue', label='Frecuencia Absoluta')
+    plt.title('Frecuencia Absoluta por ronda')
+    plt.xlabel('Ronda')
+    plt.ylabel('Frecuencia')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
     return df_resultados
 
 
@@ -160,6 +237,7 @@ def martingala(colores,balance,color_apuesta, numeros):
 def fibonacci(colores,balance, color_apuesta):
     i = 0
     bet = apuesta
+    balance_inicial = balance
     for i in range(len(colores)): 
         for j in range(len(colores[i])):
             
