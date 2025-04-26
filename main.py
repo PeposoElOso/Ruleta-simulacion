@@ -2,19 +2,21 @@ import funcs as f
 import graf as gr
 import estrategia as e
 
-numeros =f.ruleta(5, 5)
-colores = f.color(numeros)  
+numeros = f.ruleta(5, 5)
+colores = f.color(numeros)
 
-color_apuesta= str(input("Ingrese el R o N "))
+color_apuesta = str(input("Ingrese el R o N "))
 
 if color_apuesta == "R" or color_apuesta == "r":
     color_apuesta = "rojo"
 elif color_apuesta == "N" or color_apuesta == "n":
-    color_apuesta="negro"
+    color_apuesta = "negro"
 else:
     print("Color no válido. Debe ser 'R' o 'N'.")
 
-estrategia= str(input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): "))
+estrategia = str(
+    input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): ")
+)
 balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
 
 if balance_elegido == "I" or balance_elegido == "i":
@@ -26,23 +28,18 @@ else:
     exit()
 
 if estrategia == "D" or estrategia == "d":
-    e.dalembert(colores, balance,color_apuesta, numeros)
+    e.dalembert(colores, balance, color_apuesta, numeros)
 elif estrategia == "V" or estrategia == "v":
-    e.velazquez(colores,balance,color_apuesta,numeros)
+    e.velazquez(colores, balance, color_apuesta, numeros)
 elif estrategia == "M" or estrategia == "m":
-    e.martingala(colores,balance,color_apuesta,numeros)
+    e.martingala(colores, balance, color_apuesta, numeros)
 elif estrategia == "F" or estrategia == "f":
-    e.fibonacci(colores,balance,color_apuesta)
+    e.fibonacci(colores, balance, color_apuesta)
 else:
     print("Color no válido. Debe ser 'R' o 'N'.")
 
 
-
-apuesta= int(input("Ingrese el número que desea apostar (0-36): "))
-
-
-
-
+apuesta = int(input("Ingrese el número que desea apostar (0-36): "))
 
 
 # 1- grafico de tortas porcentaje de paridad
@@ -86,7 +83,3 @@ gr.graficar_desviaciones_acumuladas_por_ronda(desviaciones)
 gr.graficar_frecuencias_acumuladas_por_ronda(
     f.frecuencia_absoluta_apuesta_por_ronda(numeros, apuesta)
 )
-
-# Implementa la estrategia Fibonacci
-estrategia.fibonacci(50000, numeros)
-
