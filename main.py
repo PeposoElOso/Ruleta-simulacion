@@ -2,19 +2,29 @@ import funcs as f
 import graf as gr
 import estrategia as e
 
-numeros = f.ruleta(40, 5) #tirodas / rondas
+numeros = f.ruleta(40, 5)  # tirodas / rondas
 colores = f.color(numeros)
 
 color_apuesta = str(input("Ingrese el R o N "))
+
+
+while (
+    color_apuesta != "R"
+    and color_apuesta != "r"
+    and color_apuesta != "n"
+    and color_apuesta != "N"
+):
+    color_apuesta = str(input("El color debe ser R o N:\n"))
 
 if color_apuesta == "R" or color_apuesta == "r":
     color_apuesta = "rojo"
 elif color_apuesta == "N" or color_apuesta == "n":
     color_apuesta = "negro"
-else:
-    print("Color no válido. Debe ser 'R' o 'N'.")
 
-estrategia = str(input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): "))
+
+estrategia = str(
+    input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): ")
+)
 balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
 
 if balance_elegido == "I" or balance_elegido == "i":
@@ -32,7 +42,7 @@ elif estrategia == "V" or estrategia == "v":
 elif estrategia == "M" or estrategia == "m":
     e.martingala(colores, balance, color_apuesta, numeros)
 elif estrategia == "F" or estrategia == "f":
-    e.fibonacci(colores, balance, color_apuesta,numeros)
+    e.fibonacci(colores, balance, color_apuesta, numeros)
 else:
     print("Color no válido. Debe ser 'R' o 'N'.")
 
