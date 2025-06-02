@@ -59,8 +59,15 @@ else:
     print("Color no válido. Debe ser 'R' o 'N'.")
 
 
-apuesta = int(input("Ingrese el número que desea apostar (0-36): "))
-
+while True:
+    try:
+        apuesta = int(input("Ingrese el número que desea apostar (0-36): "))
+        if 0 <= apuesta <= 36:
+            break  # Salir del bucle si la entrada es válida
+        else:
+            print("Por favor, ingrese un número entre 0 y 36")
+    except ValueError:
+        print("Entrada inválida. Por favor, ingrese un número entero")
 
 # 1- grafico de tortas porcentaje de paridad
 paridad = f.paridad(numeros)
