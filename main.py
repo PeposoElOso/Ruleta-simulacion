@@ -32,14 +32,20 @@ while (
 
 
 balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
+while (
+    balance_elegido != "I"
+    and balance_elegido != "i"
+    and balance_elegido != "a"
+    and balance_elegido != "A"
+):
+    balance_elegido = str(
+        input("El tipo de saldo debe ser I (Infinito) o A (Acotado): \n")
+    )
 
 if balance_elegido == "I" or balance_elegido == "i":
     balance = 99999999999999999999999999999999999999999999
 elif balance_elegido == "A" or balance_elegido == "a":
     balance = int(input("Ingrese el saldo inicial: "))
-else:
-    print("Tipo de saldo no válido. Debe ser 'I' o 'A'.")
-    exit()
 
 if estrategia == "D" or estrategia == "d":
     e.dalembert(colores, balance, color_apuesta, numeros)
