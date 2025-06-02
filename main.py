@@ -25,6 +25,12 @@ elif color_apuesta == "N" or color_apuesta == "n":
 estrategia = str(
     input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): ")
 )
+while (
+    estrategia != "D" and estrategia != "V" and estrategia != "M" and estrategia != "F"
+):
+    estrategia = str(input("El tipo de estrategia a aplicar debe ser D, V, M, F: \n"))
+
+
 balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
 
 if balance_elegido == "I" or balance_elegido == "i":
