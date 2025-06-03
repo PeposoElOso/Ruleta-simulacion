@@ -1,20 +1,58 @@
+from typing import Literal
 import funcs as f
 import graf as gr
 import estrategia as e
+import argparse
 
-numeros = f.ruleta(40, 5)  # tirodas / rondas
+parser = argparse.ArgumentParser(
+    prog="Ruleta",
+    description="Calcular las estadisticas de la ruleta",
+    epilog="Todos los parametros excepto el -e son obligatorios",
+)
+
+parser.add_argument(
+    "-c", "--corridas", required=True, type=int, help="Cantidad de corridas"
+)
+parser.add_argument(
+    "-n", "--tiradas", required=True, type=int, help="Cantidad de tiradas por corrida"
+)
+parser.add_argument(
+    "-e",
+    "--eleccion",
+    type=int,
+    help="Número elegido para apostar (0-36)",
+)
+parser.add_argument(
+    "-s",
+    "--estrategia",
+    required=True,
+    choices=["D", "V", "M", "F"],
+    help="Estrategia a utilizar",
+)
+parser.add_argument(
+    "-a",
+    "--capital",
+    required=True,
+    choices=["i", "I", "A", "a"],
+    help="Tipo de capital a utilizar infinito (i) o acotado (a)",
+)
+parser.add_argument(
+    "-x",
+    "--color",
+    required=True,
+    choices=["R", "r", "N", "n"],
+    help="Color elegido: Rojo (r o R) Negro (n o N)",
+)
+
+
+args = parser.parse_args()
+print(f"{args}")
+
+numeros = f.ruleta(args.tiradas, args.corridas)  # tirodas / rondas
 colores = f.color(numeros)
 
-color_apuesta = str(input("Ingrese el R o N "))
+color_apuesta = args.color
 
-
-while (
-    color_apuesta != "R"
-    and color_apuesta != "r"
-    and color_apuesta != "n"
-    and color_apuesta != "N"
-):
-    color_apuesta = str(input("El color debe ser R o N:\n"))
 
 if color_apuesta == "R" or color_apuesta == "r":
     color_apuesta = "rojo"
@@ -22,31 +60,14 @@ elif color_apuesta == "N" or color_apuesta == "n":
     color_apuesta = "negro"
 
 
-estrategia = str(
-    input("Ingrese el tipo de estrategia que desea aplicar (D, V, M, F): ")
-)
-while (
-    estrategia != "D" and estrategia != "V" and estrategia != "M" and estrategia != "F"
-):
-    estrategia = str(input("El tipo de estrategia a aplicar debe ser D, V, M, F: \n"))
-
-
-balance_elegido = str(input("Ingrese el tipo de saldo(Infinito, Acotado): "))
-while (
-    balance_elegido != "I"
-    and balance_elegido != "i"
-    and balance_elegido != "a"
-    and balance_elegido != "A"
-):
-    balance_elegido = str(
-        input("El tipo de saldo debe ser I (Infinito) o A (Acotado): \n")
-    )
-
+balance_elegido = args.capital
+balance = 0
 if balance_elegido == "I" or balance_elegido == "i":
     balance = 99999999999999999999999999999999999999999999
 elif balance_elegido == "A" or balance_elegido == "a":
     balance = int(input("Ingrese el saldo inicial: "))
 
+estrategia = args.estrategia
 if estrategia == "D" or estrategia == "d":
     e.dalembert(colores, balance, color_apuesta, numeros)
 elif estrategia == "V" or estrategia == "v":
@@ -61,7 +82,7 @@ else:
 
 while True:
     try:
-        apuesta = int(input("Ingrese el número que desea apostar (0-36): "))
+        apuesta = args.eleccion
         if 0 <= apuesta <= 36:
             break  # Salir del bucle si la entrada es válida
         else:
